@@ -2,74 +2,151 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>java.com.author</groupId>
-  <artifactId>AddonTemplate</artifactId>
-  <version>1.0</version>
-  <packaging>jar</packaging>
+    <groupId>com.author</groupId>
+    <artifactId>AddonTemplate</artifactId>
+    <version>1.0</version>
 
-  <name>AddonTemplate</name>
-
-    <description>A template for a java maven skript addon</description>
     <properties>
-    <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-  </build>
+    <profiles>
+        <profile>
+            <id>Your Server</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <!-- Allows a bit more freedom when working on multiple projects as once -->
+<!--                            <finalName>${project.name}</finalName>-->
+                            <outputDirectory>/Users/YourProfile/ServerFile/plugins</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
-  <repositories>
-      <repository>
-          <id>papermc-repo</id>
-          <url>https://repo.papermc.io/repository/maven-public/</url>
-      </repository>
-      <repository>
-          <id>sonatype</id>
-          <url>https://oss.sonatype.org/content/groups/public/</url>
-      </repository>
-  </repositories>
+    <repositories>
+        <!-- PaperMC Repo -->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <!-- Skript Releases -->
+        <repository>
+            <id>skript-releases</id>
+            <name>Skript Repository</name>
+            <url>https://repo.skriptlang.org/releases</url>
+        </repository>
+    </repositories>
 
-  <dependencies>
-      <dependency>
-          <groupId>io.papermc.paper</groupId>
-          <artifactId>paper-api</artifactId>
-          <version>1.20.1-R0.1-SNAPSHOT</version>
-          <scope>provided</scope>
-      </dependency>
-  </dependencies>
+    <dependencies>
+    <!-- io.papermc.paper | paper-api | 1.20.1-RO.1-SNAPSHOT -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- com.github.SkriptLang | Skript | 2.6.4 -->
+        <dependency>
+            <groupId>com.github.SkriptLang</groupId>
+            <artifactId>Skript</artifactId>
+            <version>2.6.3</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.destroystokyo.paper</groupId>
+                    <artifactId>paper-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q.worldguard</groupId>
+                    <artifactId>worldguard-legacy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.marcelo-mason</groupId>
+                    <artifactId>PreciousStones</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.milkbowl.vault</groupId>
+                    <artifactId>Vault</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.bstats | bstats-bukkit | 3.0.2 -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- commons-io | commons-io | 2.11.0 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <finalName>${project.name}-${project.version}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <targetPath>.</targetPath>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>lang/default.lang</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>shade</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>LICENSE</exclude>
+                                <exclude>META-INF/**</exclude>
+                                <exclude>META-INF/*.MF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.author.addontemplate.metrics</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
