@@ -46,7 +46,7 @@ public class AddonManager {
                 logger.info("It seems like something is delaying the addon from loading, which is after skript stops accepting registrations.");
             }
             return false;
-        } else if (!Skript.getVersion().isSmallerThan(EARLIEST_SKRIPT_VERSION)) {
+        } else if (Skript.getVersion().isSmallerThan(EARLIEST_SKRIPT_VERSION)) {
             logger.info("You're currently running an unsupported Skript version, you can find the latest release of skript at https://github.com/.SkriptLang/Skript/releases/latest.");
             return false;
         } else if (!Skript.isRunningMinecraft(EARLIEST_MC_VERSION)) {
