@@ -61,7 +61,7 @@ public class AddonManager {
         SkriptAddon skriptAddon = Skript.registerAddon(plugin);
         skriptAddon.setLanguageFileDirectory("lang");
         try {
-            skriptAddon.loadClasses("java.com", "elements");
+            skriptAddon.loadClasses("com.author.addontemplate", "elements");
         } catch (IOException exception) {
             exception.printStackTrace();
             pluginManager.disablePlugin(plugin);
