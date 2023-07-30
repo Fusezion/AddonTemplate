@@ -11,12 +11,11 @@ import java.util.logging.Logger;
 
 public class AddonManager {
 
-    private PluginManager pluginManager;
-    private SkriptAddon skriptAddon;
-    private AddonTemplate plugin;
-    private Plugin skriptPlugin;
     public static final Version EARLIEST_SKRIPT_VERSION = new Version(2, 6, 4); // new Version("2.7.0-beta3") for betas/alphas
     public static final Version EARLIEST_MC_VERSION = new Version(1, 19, 4);
+    private final PluginManager pluginManager;
+    private final AddonTemplate plugin;
+    private final Plugin skriptPlugin;
     private final Logger logger;
 
     public AddonManager(AddonTemplate plugin) {
@@ -36,10 +35,10 @@ public class AddonManager {
             logger.info("this could mean something in forcing this to be loaded before Skript. Plugin disabling!");
             return false;
         } else if (!Skript.isAcceptRegistrations()) {
-            Plugin pluginMan = pluginManager.getPlugin("PluginMan");
+            Plugin plugMan = pluginManager.getPlugin("PlugMan");
             logger.info("Skript is not longer accepting registrations, addons can no longer be registered!");
-            if (pluginMan != null && pluginMan.isEnabled()) {
-                logger.info("It seems like you're running 'PluginMan'.");
+            if (plugMan != null && plugMan.isEnabled()) {
+                logger.info("It seems like you're running 'PlugMan'.");
                 logger.info("If you're trying to reload/enable this addon with PluginMan... you can't.");
                 logger.info("Please restart your server!");
             } else {
@@ -59,10 +58,10 @@ public class AddonManager {
     }
 
     public void loadSkriptElements() {
-        this.skriptAddon = Skript.registerAddon(plugin);
-        this.skriptAddon.setLanguageFileDirectory("lang");
+        SkriptAddon skriptAddon = Skript.registerAddon(plugin);
+        skriptAddon.setLanguageFileDirectory("lang");
         try {
-            this.skriptAddon.loadClasses("java.com", "elements");
+            skriptAddon.loadClasses("java.com", "elements");
         } catch (IOException exception) {
             exception.printStackTrace();
             pluginManager.disablePlugin(plugin);
