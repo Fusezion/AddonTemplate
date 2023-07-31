@@ -2,7 +2,6 @@ package com.author.addontemplate.elements.types;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Comparator;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +33,7 @@ public class Comparators {
                 if (number1 instanceof Long && number2 instanceof Long)
                     return Relation.get(number1.longValue() - number2.longValue());
                 Double double1 = number1.doubleValue(),
-                       double2 = number2.doubleValue();
+                        double2 = number2.doubleValue();
                 if (double1.isNaN() || double2.isNaN()) return Relation.SMALLER;
                 else if (double1.isInfinite() || double2.isInfinite())
                     return double1 > double2 ? Relation.GREATER : double1 < double2 ? Relation.SMALLER : Relation.EQUAL;
@@ -52,12 +51,11 @@ public class Comparators {
         });
 
 
-
     }
 
-    private static <T1,T2> void register(Class<T1> type1, Class<T2>type2, Comparator<T1,T2> comparator) {
+    private static <T1, T2> void register(Class<T1> type1, Class<T2> type2, Comparator<T1, T2> comparator) {
         // Don't register an extra comparator if there exists one already registered
         if (ch.njol.skript.registrations.Comparators.getComparator(type1, type2) != null) return;
-        ch.njol.skript.registrations.Comparators.registerComparator(type1,type2,comparator);
+        ch.njol.skript.registrations.Comparators.registerComparator(type1, type2, comparator);
     }
 }
