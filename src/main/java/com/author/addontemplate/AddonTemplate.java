@@ -22,7 +22,7 @@ public final class AddonTemplate extends JavaPlugin {
             return;
         }
         this.addon = Skript.getAddon(this);
-//        loadBStats(1234); // Change '1234' with your bStats plugin id
+        loadBStats(1234); // Change '1234' with your bStats plugin id
     }
 
     public AddonManager getAddonManager() {
@@ -38,6 +38,5 @@ public final class AddonTemplate extends JavaPlugin {
         Metrics bStatsMetric = new Metrics(this, id);
         bStatsMetric.addCustomChart(new SimplePie("skript_version", () -> Skript.getVersion().toString()));
     }
-
 
 }
